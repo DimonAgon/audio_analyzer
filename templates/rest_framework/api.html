@@ -1,0 +1,24 @@
+
+{% extends 'rest_framework/base.html' %}
+
+{% load static %}
+
+{% block style %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/General.css' %}">
+{% endblock %}
+
+
+{% block title %}
+    {% if name %}
+        {{ name }}
+        of
+        audio-analyzer
+    {% endif %}
+{% endblock %}
+
+{% block branding %}
+    <a href="/" class="navbar-brand">
+        Audio-Analyzer
+    </a>
+{% endblock %}

@@ -1,0 +1,42 @@
+
+body {
+    background-image: linear-gradient(blueviolet, orchid );
+}
+
+.page-header {
+    color: white;
+}
+
+.breadcrumb {
+    background-color: white;
+}
+
+.navbar {
+    border-top-color: violet;
+}
+
+.btn, btn-group {
+    color: white;
+    background-color: darkorchid;
+    border-color: darkslateblue;
+}
+
+.btn:hover {
+    color: white;
+    background-color: orchid;
+    border-color: darkslateblue;
+}
+
+.prettyprint {
+    background-color: white;
+    border: 1px solid white;
+}
+
+span.str {
+    color: blue;
+}
+
+.tab-content {
+    background-color: white;
+    border-color: white;
+}
