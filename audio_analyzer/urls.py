@@ -19,12 +19,13 @@ from django.urls import path, include
 
 from rest_framework import routers
 
-from audio_analyzer_app.views import PromptViewSet, PromptAssociationViewSet
+from audio_analyzer_app.views import PromptViewSet, PromptAssociationViewSet, AudioViewSet
 
 
 router = routers.DefaultRouter()
 router.register('prompts', PromptViewSet)
 router.register('prompt-associations', PromptAssociationViewSet)
+router.register('audios', AudioViewSet)
 
 
 urlpatterns = [
