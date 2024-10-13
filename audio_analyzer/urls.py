@@ -22,14 +22,14 @@ from rest_framework import routers
 from audio_analyzer_app.views import PromptViewSet, PromptAssociationViewSet, AudioViewSet
 
 
-router = routers.DefaultRouter()
-router.register('prompts', PromptViewSet)
-router.register('prompt-associations', PromptAssociationViewSet)
-router.register('audios', AudioViewSet)
+audio_analyzer_router = routers.DefaultRouter()
+audio_analyzer_router.register('prompts', PromptViewSet)
+audio_analyzer_router.register('prompt-associations', PromptAssociationViewSet)
+audio_analyzer_router.register('audios', AudioViewSet)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
+    path('', include(audio_analyzer_router.urls)),
     path('', include('authorization.urls'))
 ]

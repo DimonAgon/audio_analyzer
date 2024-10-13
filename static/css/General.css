@@ -1,6 +1,13 @@
 
+:root{
+    --disco_gradient_colors: blueviolet, orchid;
+    --disco_gradient_up: linear-gradient(to top, var(--disco_gradient_colors));
+    --disco_gradient_down: linear-gradient(to bottom, var(--disco_gradient_colors));
+    --rest_framework_grey: #2C2C2C
+}
+
 body {
-    background-image: linear-gradient(blueviolet, orchid );
+    background-image: var(--disco_gradient_down);
 }
 
 .page-header {
@@ -39,4 +46,53 @@ span.str {
 .tab-content {
     background-color: white;
     border-color: white;
+}
+
+.card-body {
+    background-image: var(--disco_gradient_down);
+}
+
+.card-header{
+    background: var(--rest_framework_grey);
+}
+
+.card-title{
+    display: block;
+    text-align: center;
+
+    color: white;
+    border-top: 3px solid violet;
+}
+
+.card-footer {
+    background-color: white;
+    border-top-style: none;
+}
+
+.window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 20%;
+}
+
+.field {
+    display: block;
+    width: 100%;
+
+    margin-top: 0.5px;
+
+    color: white;
+    background-color: darkorchid;
+    border: none;
+}
+
+label {
+    color: white;
+}
+
+.field:focus {
+    outline: none;
 }

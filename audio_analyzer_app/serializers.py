@@ -14,17 +14,24 @@ import re
 
 speech_recognizer = speech_recognition.Recognizer()
 
-
 class AudioSerializer(serializers.ModelSerializer):
-    prompt_associations = serializers.SlugRelatedField(slug_field='name', many=True, read_only=True)
+    prompt_associations = serializers.SlugRelatedField(slug_field='name', many=True, read_only=True, required=False)
+    user = serializers.SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
         model = Audio
         fields = "__all__"
 
+    def create(self, validated_data):
+        user = self.context['request'].user
+        audio = Audio.objects.create(**validated_data, user=user)
+        audio.save()
+        return audio
+
 
 class PromptSerializer(serializers.ModelSerializer):
     association = serializers.SlugRelatedField(slug_field='name', queryset=PromptAssociation.objects.all())
+    user = serializers.SlugRelatedField(slug_field='username', read_only=True, required=False)
 
     class Meta:
         model = Prompt
@@ -32,8 +39,9 @@ class PromptSerializer(serializers.ModelSerializer):
 
 
 class PromptAssociationSerializer(serializers.ModelSerializer):
-    prompts = serializers.SlugRelatedField(slug_field='crux', many=True, read_only=True)
+    prompts = serializers.SlugRelatedField(slug_field='crux', many=True, read_only=True, required=False)
     audio = serializers.SlugRelatedField(slug_field='name', queryset=Audio.objects.all())
+    user = serializers.SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
         model = PromptAssociation
@@ -42,6 +50,7 @@ class PromptAssociationSerializer(serializers.ModelSerializer):
 
 
     def create(self, validated_data):
+        user = self.context['request'].user
         audio = validated_data['audio']
         with speech_recognition.AudioFile(audio.audio.path) as audio_source:
             audio_data = speech_recognizer.record(audio_source)
@@ -58,7 +67,7 @@ class PromptAssociationSerializer(serializers.ModelSerializer):
             ]
         )
         prompt_association_name = prompt_association_name_response.choices[0].message.content
-        prompt_association_data = {'name': prompt_association_name, 'text': prompt_association_text, 'audio': audio}
+        prompt_association_data = {'name': prompt_association_name, 'text': prompt_association_text, 'audio': audio, 'user': user}
         prompt_association = PromptAssociation.objects.create(**prompt_association_data)
         prompt_association.save()
         prompts_cruxes_text_response = openai_client.chat.completions.create(
@@ -77,7 +86,7 @@ class PromptAssociationSerializer(serializers.ModelSerializer):
         prompts_cruxes_text = prompts_cruxes_text_response.choices[0].message.content
         prompts_cruxes = re.findall("'.+'", prompts_cruxes_text)
         for crux in prompts_cruxes:
-            prompt_data = {'crux': crux, 'association': prompt_association}
+            prompt_data = {'crux': crux, 'association': prompt_association, 'user': user}
             prompt = Prompt.objects.create(**prompt_data)
             prompt.save()
 

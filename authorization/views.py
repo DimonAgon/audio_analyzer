@@ -5,11 +5,13 @@ from django.contrib.auth import login, logout
 
 from rest_framework import permissions
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import User
 
-from .serializers import TokenSerializerNative
-
+from .permissions import general_permission_classes
+from .serializers import TokenSerializerNative, UserSerializer
 
 from authorization.forms import NativeUserCreationForm, NativeAuthenticationForm
 from authorization.infrastructure.enums import *
@@ -20,7 +22,7 @@ def register(request, *args, **kwargs):
         form = NativeUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('login')
 
     else:
         form = NativeUserCreationForm()
@@ -57,4 +59,22 @@ def logout_view(request, *args, **kwargs):
 class TokenViewSetNative(viewsets.ModelViewSet):
     queryset = Token.objects.all()
     serializer_class = TokenSerializerNative
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = general_permission_classes
+
+    def list(self, request):
+        user = request.user
+        queryset = Token.objects.filter(user=user)
+        serializer = TokenSerializerNative(queryset, many=True)
+        return Response(serializer.data)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = general_permission_classes
+    http_method_names = ['get', 'put', 'update']
+
+    def list(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
