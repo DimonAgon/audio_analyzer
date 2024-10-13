@@ -1,0 +1,33 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/authorization_window.css' %}">
+
+
+<section>
+    {% with authorization_type_val=authorization_type.value %}
+        <form method="POST">
+        <div class="card window authorization-window" id="registration-window"> {# TODO: remove id #}
+            <div class="card-header">
+                <span class="card-title">
+                    {% if authorization_type_val == 'LOGGING_IN' %}
+                        Log-in
+                    {% elif authorization_type_val == 'REGISTRATION' %}
+                        Register
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="card-body">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </div>
+
+            <div class="card-footer">
+                <button class="btn button" id="authorization-button" type="submit">
+                    Go
+                </button>
+            </div>
+        </div>
+        </form>
+    {% endwith %}
+</section>
