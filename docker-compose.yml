@@ -1,0 +1,19 @@
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./audio_analyzer/:/usr/src/audio_analyzer/
+    env_file:
+      - ./.env
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    env_file:
+      - ./.env
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
