@@ -30,8 +30,7 @@ copy .env.example .env  (Windows)
 3. Build and run the docker container
 
 ```
-docker-compose build
-docker-compose up -d
+docker-compose up -d --build    
 ```
 
 4. Migrate database
