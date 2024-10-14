@@ -1,10 +1,7 @@
-import re #TODO: remove unknown
 
-from pyexpat.errors import messages #TODO: remove unknown
 from rest_framework import serializers
 
-from django.db.models import Model
-from unicodedata import normalize
+from assets.serializers import PrivateSerializerFieldQuerySetGetter
 
 from .models import Prompt, PromptAssociation, Audio
 from .llm_client.client import openai_client
@@ -18,14 +15,6 @@ from typing import Type
 
 
 speech_recognizer = speech_recognition.Recognizer()
-
-
-class PrivateSerializerFieldQuerySetGetter:
-    model: Model
-
-    def get_queryset(self):
-        user = self.context['request'].user
-        return self.model.objects.filter(user=user)
 
 
 class AudioPrivateSlugRelatedField(PrivateSerializerFieldQuerySetGetter, serializers.SlugRelatedField):

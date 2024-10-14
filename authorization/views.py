@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
 
 from django.contrib.auth import login, logout
 
-from rest_framework import permissions
 from rest_framework import viewsets
 from rest_framework.response import Response
+
+from assets.viewsets import PrivateModelViewSetQuerySetGetter
 
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
@@ -56,15 +56,11 @@ def logout_view(request, *args, **kwargs):
     return redirect('authorization')
 
 
-class TokenViewSetNative(viewsets.ModelViewSet):
+class TokenViewSetNative(PrivateModelViewSetQuerySetGetter, viewsets.ModelViewSet):
+    model = Token
     queryset = Token.objects.all()
     serializer_class = TokenSerializerNative
     permission_classes = general_permission_classes
-
-    def get_queryset(self):
-        user = self.request.user
-        queryset = Token.objects.filter(user=user)
-        return queryset
 
 
 class UserViewSet(viewsets.ModelViewSet):
