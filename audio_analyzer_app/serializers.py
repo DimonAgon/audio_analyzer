@@ -3,6 +3,9 @@ import re #TODO: remove unknown
 from pyexpat.errors import messages #TODO: remove unknown
 from rest_framework import serializers
 
+from django.db.models import Model
+from unicodedata import normalize
+
 from .models import Prompt, PromptAssociation, Audio
 from .llm_client.client import openai_client
 from .llm_client.constants import completion_preserved_arguments
@@ -11,8 +14,27 @@ import speech_recognition
 
 import re
 
+from typing import Type
+
 
 speech_recognizer = speech_recognition.Recognizer()
+
+
+class PrivateSerializerFieldQuerySetGetter:
+    model: Model
+
+    def get_queryset(self):
+        user = self.context['request'].user
+        return self.model.objects.filter(user=user)
+
+
+class AudioPrivateSlugRelatedField(PrivateSerializerFieldQuerySetGetter, serializers.SlugRelatedField):
+    model = Audio
+
+
+class PromptAssociationPrivateSlugRelatedField(PrivateSerializerFieldQuerySetGetter, serializers.SlugRelatedField):
+    model = PromptAssociation
+
 
 class AudioSerializer(serializers.ModelSerializer):
     prompt_associations = serializers.SlugRelatedField(slug_field='name', many=True, read_only=True, required=False)
@@ -30,7 +52,7 @@ class AudioSerializer(serializers.ModelSerializer):
 
 
 class PromptSerializer(serializers.ModelSerializer):
-    association = serializers.SlugRelatedField(slug_field='name', queryset=PromptAssociation.objects.all())
+    association = PromptAssociationPrivateSlugRelatedField(slug_field='name')
     user = serializers.SlugRelatedField(slug_field='username', read_only=True, required=False)
 
     class Meta:
@@ -40,7 +62,7 @@ class PromptSerializer(serializers.ModelSerializer):
 
 class PromptAssociationSerializer(serializers.ModelSerializer):
     prompts = serializers.SlugRelatedField(slug_field='crux', many=True, read_only=True, required=False)
-    audio = serializers.SlugRelatedField(slug_field='name', queryset=Audio.objects.all())
+    audio = AudioPrivateSlugRelatedField(slug_field='name')
     user = serializers.SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
