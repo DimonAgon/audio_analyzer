@@ -13,22 +13,20 @@ class AudioViewSet(viewsets.ModelViewSet):
     serializer_class = AudioSerializer
     permission_classes = general_permission_classes
 
-    def list(self, request):
-        user = request.user
+    def get_queryset(self):
+        user = self.request.user
         queryset = Audio.objects.filter(user=user)
-        serializer = AudioSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return queryset
 
 class PromptViewSet(viewsets.ModelViewSet):
     queryset = Prompt.objects.all()
     serializer_class = PromptSerializer
     permission_classes = general_permission_classes
 
-    def list(self, request):
-        user = request.user
+    def get_queryset(self):
+        user = self.request.user
         queryset = Prompt.objects.filter(user=user)
-        serializer = PromptSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return queryset
 
 
 class PromptAssociationViewSet(viewsets.ModelViewSet):
@@ -36,8 +34,7 @@ class PromptAssociationViewSet(viewsets.ModelViewSet):
     serializer_class = PromptAssociationSerializer
     permission_classes = general_permission_classes
 
-    def list(self, request):
-        user = request.user
+    def get_queryset(self):
+        user = self.request.user
         queryset = PromptAssociation.objects.filter(user=user)
-        serializer = PromptAssociationSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return queryset
