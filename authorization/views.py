@@ -61,11 +61,10 @@ class TokenViewSetNative(viewsets.ModelViewSet):
     serializer_class = TokenSerializerNative
     permission_classes = general_permission_classes
 
-    def list(self, request):
-        user = request.user
+    def get_queryset(self):
+        user = self.request.user
         queryset = Token.objects.filter(user=user)
-        serializer = TokenSerializerNative(queryset, many=True)
-        return Response(serializer.data)
+        return queryset
 
 
 class UserViewSet(viewsets.ModelViewSet):
