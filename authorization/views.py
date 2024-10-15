@@ -53,7 +53,7 @@ def login_view(request, *args, **kwargs):
 
 def logout_view(request, *args, **kwargs):
     logout(request)
-    return redirect('authorization')
+    return redirect('login')
 
 
 class TokenViewSetNative(PrivateModelViewSetQuerySetGetter, viewsets.ModelViewSet):
