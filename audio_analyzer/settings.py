@@ -140,7 +140,6 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, "collected_static")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'audio_analyzer_app/static'),
 ]
 STATIC_URL = 'static/'
 
