@@ -10,7 +10,7 @@ After cloning the repo:
 
 2. Configure secrets
 
-   Create secrets.py file, 
+   Create secrets_.py file, 
    define AUDIO_ANALYZER_SECRET_KEY, OPENAI_ANALYZER_API_KEY
 
 3. Build and run the docker container
