@@ -6,25 +6,11 @@
 
 After cloning the repo:
 
-1. Setup env
-
-```bash
-# Python virtual env
-python3 -m venv venv (Linux)
-pytho -m venv venv (Windows)
-source venv/bin/activate
-```
-
-```bash
-# Env variables
-# Copy example file, change values if needed
-cp .env.example .env (Linux)
-copy .env.example .env  (Windows)
-```
+1. configure environment at .env
 
 2. Configure secrets
 
-   Create secrets.py file, 
+   Create secrets_.py file, 
    define AUDIO_ANALYZER_SECRET_KEY, OPENAI_ANALYZER_API_KEY
 
 3. Build and run the docker container
