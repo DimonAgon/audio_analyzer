@@ -29,6 +29,6 @@ docker-compose exec web python manage.py migrate --noinput
 
 6. Try it out
 
-   create audios at '/audios/' out of .wav, create prompt-associations to audios at '/prompt-associations'
+   create audios at '/audios/' out of small .wav files, create prompt-associations to audios at '/prompt-associations'
 
 
