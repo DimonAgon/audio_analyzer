@@ -27,9 +27,9 @@ class TokenSerializerNative(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    prompts = serializers.SlugRelatedField(slug_field="crux", queryset=Prompt.objects.all(), many=True)
-    prompt_associations = serializers.SlugRelatedField(slug_field="name", queryset=PromptAssociation.objects.all(), many=True)
-    audios = serializers.SlugRelatedField(slug_field="name", queryset=Audio.objects.all(), many=True)
+    prompts = serializers.SlugRelatedField(slug_field="crux", many=True, read_only=True)
+    prompt_associations = serializers.SlugRelatedField(slug_field="name", read_only=True, many=True)
+    audios = serializers.SlugRelatedField(slug_field="name", read_only=True, many=True)
 
     class Meta:
         model = User
