@@ -1,8 +1,6 @@
 
 from rest_framework import serializers
 
-from assets.serializers import PrivateSerializerFieldQuerySetGetter
-
 from rest_framework.authtoken.models import Token
 
 from django.contrib.auth.models import User
@@ -10,7 +8,7 @@ from django.contrib.auth.models import User
 from audio_analyzer_app.models import Prompt, PromptAssociation, Audio
 
 
-class TokenSerializerNative(PrivateSerializerFieldQuerySetGetter, serializers.ModelSerializer):
+class TokenSerializerNative(serializers.ModelSerializer):
 
     class Meta:
         model = Token
@@ -28,7 +26,7 @@ class TokenSerializerNative(PrivateSerializerFieldQuerySetGetter, serializers.Mo
 
 
 
-class UserSerializer(PrivateSerializerFieldQuerySetGetter, serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     prompts = serializers.SlugRelatedField(slug_field="crux", queryset=Prompt.objects.all(), many=True)
     prompt_associations = serializers.SlugRelatedField(slug_field="name", queryset=PromptAssociation.objects.all(), many=True)
     audios = serializers.SlugRelatedField(slug_field="name", queryset=Audio.objects.all(), many=True)
